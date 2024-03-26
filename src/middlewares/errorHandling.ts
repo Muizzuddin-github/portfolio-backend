@@ -4,6 +4,7 @@ import ResponseErr from "../responses/error";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import multer from "multer";
+import axios from "axios";
 
 function errorHandling(
   err: Error | null,
@@ -51,8 +52,14 @@ function errorHandling(
 
     res.status(400).json(r);
     return;
-  }
+  } else if (err instanceof axios.AxiosError) {
+    const r: ResponseErrors = {
+      errors: [err.response?.data.error.message || err.message],
+    };
 
+    res.status(err.response?.status || 500).json(r);
+    return;
+  }
   const r: ResponseErrors = {
     errors: [err.message],
   };

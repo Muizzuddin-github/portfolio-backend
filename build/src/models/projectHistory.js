@@ -35,5 +35,5 @@ const projectHistorySchema = new mongoose_1.default.Schema({
         default: Date.now,
     },
 });
-const ProjectHistoryCol = mongoose_1.default.model("project_history", projectHistorySchema, "project_history");
+const ProjectHistoryCol = mongoose_1.default.model("my_project", projectHistorySchema, "my_project");
 exports.default = ProjectHistoryCol;

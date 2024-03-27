@@ -29,7 +29,7 @@ describe("GetAll", () => {
             json: jest.fn().mockReturnThis(),
         };
         const next = jest.fn();
-        yield projectHistory_1.default.getAll({}, res, next);
+        yield projectHistory_1.default.GetAll({}, res, next);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             message: "All data project history",
@@ -147,5 +147,197 @@ describe("Add", () => {
         expect(next).not.toHaveBeenCalled();
         expect(res.status).toHaveBeenCalledWith(201);
         expect(res.json).toHaveBeenCalled();
+    }));
+});
+describe("Edit", () => {
+    it("should error object id invalid", () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const req = {
+                params: {
+                    id: "dsds",
+                },
+            };
+            const next = jest.fn();
+            yield projectHistory_1.default.Edit(req, {}, next);
+        }
+        catch (err) {
+            if (err instanceof error_1.default) {
+                expect(err.getStatusCode).toBe(400);
+                expect(err.message).toBe("ID Invalid");
+            }
+        }
+    }));
+    it("should error project history not found", () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            projectHistory_2.default.findById.mockResolvedValueOnce(null);
+            const req = {
+                params: {
+                    id: "660246b44c6f5adf110c756c",
+                },
+            };
+            const next = jest.fn();
+            yield projectHistory_1.default.Edit(req, {}, next);
+        }
+        catch (err) {
+            if (err instanceof error_1.default) {
+                expect(err.getStatusCode).toBe(400);
+                expect(err.message).toBe("Project history not found");
+            }
+        }
+    }));
+    it("should error required validation", () => __awaiter(void 0, void 0, void 0, function* () {
+        projectHistory_2.default.findById.mockResolvedValueOnce(true);
+        const req = {
+            body: {},
+            params: {
+                id: "660246b44c6f5adf110c756c",
+            },
+        };
+        const next = jest.fn();
+        yield projectHistory_1.default.Edit(req, {}, next);
+        expect(next).toHaveBeenCalled();
+        expect(next.mock.calls[0][0] instanceof joi_1.default.ValidationError).toBe(true);
+    }));
+    it("should upload file not found success", () => __awaiter(void 0, void 0, void 0, function* () {
+        projectHistory_2.default.findById.mockResolvedValueOnce(true);
+        projectHistory_2.default.updateOne.mockResolvedValueOnce(true);
+        const req = {
+            body: {
+                title: "okeh gas",
+                description: "aa",
+                technology: [
+                    {
+                        name: "as",
+                        logo: "dsds",
+                    },
+                ],
+            },
+            params: {
+                id: "660246b44c6f5adf110c756c",
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        const next = jest.fn();
+        yield projectHistory_1.default.Edit(req, res, next);
+        expect(next).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalled();
+    }));
+    it("should success", () => __awaiter(void 0, void 0, void 0, function* () {
+        const resWeb = {
+            data: {
+                image: {
+                    url: "kuy",
+                },
+            },
+        };
+        projectHistory_2.default.findById.mockResolvedValueOnce(true);
+        axios_1.default.post.mockResolvedValueOnce(resWeb);
+        projectHistory_2.default.updateOne.mockResolvedValueOnce(true);
+        const req = {
+            file: {
+                filename: "txt",
+                fieldname: "txt",
+                originalname: "txt.jpg",
+                mimetype: "image/jpg",
+                destination: "",
+                path: "",
+                size: 100,
+                stream: stream_1.Readable.from([]),
+                encoding: "",
+                buffer: Buffer.from("okeh", "utf8"),
+            },
+            body: {
+                title: "okeh gas",
+                description: "aa",
+                technology: [
+                    {
+                        name: "as",
+                        logo: "dsds",
+                    },
+                ],
+            },
+            params: {
+                id: "660246b44c6f5adf110c756c",
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        const next = jest.fn();
+        yield projectHistory_1.default.Edit(req, res, next);
+        expect(next).not.toHaveBeenCalled();
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalled();
+    }));
+});
+describe("Del", () => {
+    it("should error object id invalid", () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const req = {
+                params: {
+                    id: "sds",
+                },
+            };
+            const res = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+            const next = jest.fn();
+            yield projectHistory_1.default.Del(req, res, next);
+        }
+        catch (err) {
+            if (err instanceof error_1.default) {
+                expect(err.getStatusCode).toBe(400);
+                expect(err.message).toBe("ID Invalid");
+            }
+        }
+    }));
+    it("should error not found", () => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            projectHistory_2.default.deleteOne.mockResolvedValueOnce({
+                deleteCount: 0,
+            });
+            const req = {
+                params: {
+                    id: "660246b44c6f5adf110c756c",
+                },
+            };
+            const res = {
+                status: jest.fn().mockReturnThis(),
+                json: jest.fn(),
+            };
+            const next = jest.fn();
+            yield projectHistory_1.default.Del(req, res, next);
+        }
+        catch (err) {
+            if (err instanceof error_1.default) {
+                expect(err.getStatusCode).toBe(404);
+                expect(err.message).toBe("Project history not found");
+            }
+        }
+    }));
+    it("should success", () => __awaiter(void 0, void 0, void 0, function* () {
+        projectHistory_2.default.deleteOne.mockResolvedValueOnce({
+            deleteCount: 1,
+        });
+        const req = {
+            params: {
+                id: "660246b44c6f5adf110c756c",
+            },
+        };
+        const res = {
+            status: jest.fn().mockReturnThis(),
+            json: jest.fn(),
+        };
+        const next = jest.fn();
+        yield projectHistory_1.default.Del(req, res, next);
+        expect(res.status).toHaveBeenCalledWith(200);
+        expect(res.json).toHaveBeenCalled();
+        expect(next).not.toHaveBeenCalled();
     }));
 });

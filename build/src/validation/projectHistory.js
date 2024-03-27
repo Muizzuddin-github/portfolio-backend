@@ -5,7 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const joi_1 = __importDefault(require("joi"));
 class ProjectHistorySchema {
-    static get addSchema() {
+    static get dataSchema() {
         return joi_1.default.object({
             title: joi_1.default.string().trim().required(),
             description: joi_1.default.string().trim().required(),
@@ -19,8 +19,8 @@ class ProjectHistorySchema {
     }
 }
 class ProjectHistoryValidation extends ProjectHistorySchema {
-    static add(body) {
-        return super.addSchema.validateAsync(body, {
+    static data(body) {
+        return super.dataSchema.validateAsync(body, {
             abortEarly: false,
         });
     }

@@ -2,7 +2,7 @@ import Joi from "joi";
 import { ProjectHistoryReqBody } from "../requestbody/ProjectHistory";
 
 class ProjectHistorySchema {
-  protected static get addSchema() {
+  protected static get dataSchema() {
     return Joi.object({
       title: Joi.string().trim().required(),
       description: Joi.string().trim().required(),
@@ -19,8 +19,8 @@ class ProjectHistorySchema {
 }
 
 class ProjectHistoryValidation extends ProjectHistorySchema {
-  static add(body: ProjectHistoryReqBody) {
-    return super.addSchema.validateAsync(body, {
+  static data(body: ProjectHistoryReqBody) {
+    return super.dataSchema.validateAsync(body, {
       abortEarly: false,
     });
   }

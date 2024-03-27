@@ -21,7 +21,7 @@ describe("GetAll", () => {
 
     const next: NextFunction = jest.fn();
 
-    await Technology.getAll({} as Request, res as Response, next);
+    await Technology.GetAll({} as Request, res as Response, next);
 
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({

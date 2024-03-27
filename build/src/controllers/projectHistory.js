@@ -16,8 +16,9 @@ const error_1 = __importDefault(require("../responses/error"));
 const projectHistory_1 = __importDefault(require("../validation/projectHistory"));
 const axios_1 = __importDefault(require("axios"));
 const projectHistory_2 = __importDefault(require("../models/projectHistory"));
+const isObjectID_1 = __importDefault(require("../utility/isObjectID"));
 class ProjectHistory {
-    static getAll(req, res, next) {
+    static GetAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = yield projectHistory_2.default.find();
@@ -38,7 +39,7 @@ class ProjectHistory {
                 if (!req.file) {
                     throw new error_1.default(400, "Image required");
                 }
-                const val = yield projectHistory_1.default.add(req.body);
+                const val = yield projectHistory_1.default.data(req.body);
                 const blob = new Blob([req.file.buffer], { type: req.file.mimetype });
                 const formData = new FormData();
                 formData.append("source", blob, req.file.originalname);
@@ -53,10 +54,78 @@ class ProjectHistory {
                 const n = yield insert.save();
                 const insertedID = n._id;
                 const r = {
-                    message: "Add Project history successfully",
+                    message: "Add project history successfully",
                     insertedID: insertedID.toHexString(),
                 };
                 res.status(201).json(r);
+            }
+            catch (err) {
+                next(err);
+            }
+        });
+    }
+    static Edit(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!(0, isObjectID_1.default)(req.params.id)) {
+                    throw new error_1.default(400, "ID Invalid");
+                }
+                const checkData = yield projectHistory_2.default.findById(req.params.id);
+                if (!checkData) {
+                    throw new error_1.default(404, "Project history not found");
+                }
+                const val = yield projectHistory_1.default.data(req.body);
+                if (!req.file) {
+                    yield projectHistory_2.default.updateOne({ _id: req.params.id }, {
+                        $set: {
+                            title: val.title,
+                            description: val.description,
+                            technology: val.technology,
+                        },
+                    });
+                    const r = {
+                        message: "Update project history successfully",
+                    };
+                    res.status(200).json(r);
+                    return;
+                }
+                const blob = new Blob([req.file.buffer], { type: req.file.mimetype });
+                const formData = new FormData();
+                formData.append("source", blob);
+                const resWeb = yield axios_1.default.post("https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5", formData);
+                const data = resWeb.data;
+                yield projectHistory_2.default.updateOne({ _id: req.params.id }, {
+                    $set: {
+                        title: val.title,
+                        image: data.image.url,
+                        description: val.description,
+                        technology: val.technology,
+                    },
+                });
+                const r = {
+                    message: "Update project history successfully",
+                };
+                res.status(200).json(r);
+            }
+            catch (err) {
+                next(err);
+            }
+        });
+    }
+    static Del(req, res, next) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if (!(0, isObjectID_1.default)(req.params.id)) {
+                    throw new error_1.default(400, "ID Invalid");
+                }
+                const result = yield projectHistory_2.default.deleteOne({ _id: req.params.id });
+                if (result.deletedCount === 0) {
+                    throw new error_1.default(404, "Project history not found");
+                }
+                const r = {
+                    message: "Delete project history successfully",
+                };
+                res.status(200).json(r);
             }
             catch (err) {
                 next(err);

@@ -16,7 +16,7 @@ describe("Project history validation", () => {
       ],
     };
 
-    const val = await ProjectHistoryValidation.add(data);
+    const val = await ProjectHistoryValidation.data(data);
     expect(val).toEqual(data);
   });
 
@@ -28,7 +28,7 @@ describe("Project history validation", () => {
         technology: [],
       };
 
-      await ProjectHistoryValidation.add(data);
+      await ProjectHistoryValidation.data(data);
     } catch (err) {
       expect(err instanceof Joi.ValidationError).toBe(true);
     }

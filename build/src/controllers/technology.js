@@ -18,7 +18,7 @@ const error_1 = __importDefault(require("../responses/error"));
 const technology_2 = __importDefault(require("../validation/technology"));
 const isObjectID_1 = __importDefault(require("../utility/isObjectID"));
 class Technology {
-    static getAll(req, res, next) {
+    static GetAll(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const data = yield technology_1.default.find();

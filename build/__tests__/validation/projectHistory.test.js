@@ -26,7 +26,7 @@ describe("Project history validation", () => {
                 },
             ],
         };
-        const val = yield projectHistory_1.default.add(data);
+        const val = yield projectHistory_1.default.data(data);
         expect(val).toEqual(data);
     }));
     it("should error required", () => __awaiter(void 0, void 0, void 0, function* () {
@@ -36,7 +36,7 @@ describe("Project history validation", () => {
                 description: " ",
                 technology: [],
             };
-            yield projectHistory_1.default.add(data);
+            yield projectHistory_1.default.data(data);
         }
         catch (err) {
             expect(err instanceof joi_1.default.ValidationError).toBe(true);

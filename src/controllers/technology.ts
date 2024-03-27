@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 import isObjectID from "../utility/isObjectID";
 
 class Technology {
-  public static async getAll(req: Request, res: Response, next: NextFunction) {
+  public static async GetAll(req: Request, res: Response, next: NextFunction) {
     try {
       const data: TechnologyEntity[] = await TechnologyCol.find();
 

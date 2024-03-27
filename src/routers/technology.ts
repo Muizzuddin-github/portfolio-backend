@@ -5,7 +5,7 @@ import upload from "../utility/multer";
 
 const technology: express.Router = express.Router();
 
-technology.get("/api/technology", Technology.getAll);
+technology.get("/api/technology", Technology.GetAll);
 technology.post(
   "/api/technology",
   onlyLogin,

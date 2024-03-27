@@ -29,7 +29,7 @@ describe("GetAll", () => {
             json: jest.fn(),
         };
         const next = jest.fn();
-        yield technology_1.default.getAll({}, res, next);
+        yield technology_1.default.GetAll({}, res, next);
         expect(res.status).toHaveBeenCalledWith(200);
         expect(res.json).toHaveBeenCalledWith({
             message: "All data technology",
